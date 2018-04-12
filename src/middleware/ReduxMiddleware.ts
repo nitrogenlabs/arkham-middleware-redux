@@ -1,6 +1,13 @@
+/**
+ * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
+ * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+ */
+import {FluxAction} from 'arkhamjs/lib';
+import {Store} from 'redux';
+
 export class ReduxMiddleware {
   name: string;
-  reduxStore;
+  reduxStore: Store<any>;
 
   constructor(reduxStore) {
     this.name = 'reduxAdapter';
@@ -10,7 +17,7 @@ export class ReduxMiddleware {
     this.postDispatch = this.postDispatch.bind(this);
   }
 
-  postDispatch(action, nextStore) {
+  postDispatch(action, nextStore): Promise<FluxAction> {
     // ... Alter action if needed
     const {__ARKHAMJS_DISPATCH: isArkhamJS} = action;
 

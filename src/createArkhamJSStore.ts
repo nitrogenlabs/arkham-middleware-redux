@@ -1,28 +1,22 @@
+/**
+ * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
+ * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+ */
 import {Flux} from 'arkhamjs';
-import {createStore} from 'redux';
+import {applyMiddleware, createStore, Store} from 'redux';
+import {arkhamJSMiddleware} from './middleware/arkhamJSMiddleware';
+import {ReduxMiddleware} from './middleware/ReduxMiddleware';
 
-export const createArkhamJSStore = (reducer, reduxMiddleware = [], statePath, fluxOptions) => {
-  const arkhamMiddleware = store => next => action => {
-    const {__ARKHAMJS_DISPATCH: isArkhamJS} = action;
-    delete action.__ARKHAMJS_DISPATCH;
+export interface ReduxWindow extends Window {
+  __REDUX_DEVTOOLS_EXTENSION__: () => void;
+}
 
-    // Run the action through the redux reducers
-    next(action);
+declare let window: ReduxWindow;
 
-    // Save the new, altered state within ArkhamJS
-    Flux.setState(statePath, store.getState());
-
-    // Make sure we emit the event through ArkhamJS for any listeners.
-
-    if(!isArkhamJS) {
-      action.__ARKHAMJS_DISPATCH = true;
-      Flux.dispatch(action);
-    }
-  };
-
+export const createArkhamJSStore = (rootReducer, reduxMiddleware = [], statePath, fluxOptions): Store<any> => {
   // Add the listener via middleware
   const devTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-  const store = createStore(rootReducer, devTools, applyMiddleware(...reduxMiddleware, arkhamMiddleware));
+  const store = createStore(rootReducer, devTools, applyMiddleware(...reduxMiddleware, arkhamJSMiddleware(statePath)));
 
   // Add redux middleware to Arkham to relay dispatches to Redux
   const {middleware = [], ...options} = fluxOptions;
