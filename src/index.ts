@@ -4,10 +4,10 @@
  */
 
 // Middleware for Redux
-export {arkhamJSMiddleware} from './middleware/arkhamJSMiddleware';
+export {arkhamMiddleware} from './middleware/arkhamMiddleware';
 
 // Create a Redux store which integrates with ArkhamJS
-export {createArkhamJSStore} from './createArkhamJSStore';
+export {createArkhamStore} from './createArkhamStore';
 
 // Middleware for ArkhamJS
 export {ReduxMiddleware} from './middleware/ReduxMiddleware';

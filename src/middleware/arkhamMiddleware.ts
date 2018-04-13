@@ -5,7 +5,7 @@
 import {Flux} from 'arkhamjs';
 import {Middleware} from 'redux';
 
-export const arkhamJSMiddleware = (statePath: string): Middleware => (store) => (next) => (action: any) => {
+export const arkhamMiddleware = (statePath: string): Middleware => (store) => (next) => (action: any) => {
   const {__ARKHAMJS_DISPATCH: isArkhamJS} = action;
   delete action.__ARKHAMJS_DISPATCH;
 
