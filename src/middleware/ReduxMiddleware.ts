@@ -9,8 +9,8 @@ export class ReduxMiddleware {
   name: string;
   reduxStore: Store<any>;
 
-  constructor(reduxStore) {
-    this.name = 'reduxAdapter';
+  constructor(name: string, reduxStore: Store<any>) {
+    this.name = name ? `reduxMiddleware-${name}` : 'reduxMiddleware';
     this.reduxStore = reduxStore;
 
     // Methods

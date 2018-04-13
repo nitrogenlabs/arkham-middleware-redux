@@ -20,12 +20,14 @@ export const createArkhamJSStore = (rootReducer, reduxMiddleware = [], statePath
 
   // Add redux middleware to Arkham to relay dispatches to Redux
   const {middleware = [], ...options} = fluxOptions;
-  middleware.push(new ReduxMiddleware(store));
+  middleware.push(new ReduxMiddleware(statePath, store));
   options.middleware = middleware;
 
   // Initialize ArkhamJS
   if(options) {
     Flux.init(options);
+  } else {
+    Flux.addMiddleware(middleware);
   }
 
   // Save initial state tree
