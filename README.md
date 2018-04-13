@@ -1,4 +1,4 @@
-# @nlabs/arkham-middleware-redux
+# @nlabs/arkhamjs-middleware-redux
 
 ArkhamJS Redux middleware integrates ArkhamJS into existing redux applications to provide access to ArkhamJS features and/or provide a simple migration path to ArkhamJS.
 
@@ -10,7 +10,9 @@ yarn add @nlabs/arkhamjs-middleware-redux
 
 ## Usage
 
-### createArkhamStore
+### `createArkhamStore`
+
+Create a Redux store that creates a two-way binding with ArkhamJS.
 
 ```javascript
 // Create Redux store
@@ -42,7 +44,7 @@ render(
 - **reduxMiddleware** - *(Middleware[])* (optional) Redux middleware. Any additional Redux middleware used in the app.
 - **arkhamOptions** - *(FluxOptions)* (optional) ArkhamJS options. Use only if intending to initialize a new instance.
 
-### ReduxMiddleware
+### `ReduxMiddleware`
 
 ArkhamJS middleware to relay dispatched actions to Redux.
 
@@ -64,7 +66,7 @@ Flux.init({middleware});
 - **statePath** - *(string[] | string)* State tree path where to set this branch of the store's state tree.
 - **store** - *(Store)* Redux root store. The store created by `createStore()`.
 
-### arkhamMiddleware
+### `arkhamMiddleware`
 
 Redux middleware to relay Redux action dispatches to ArkhamJS.
 
