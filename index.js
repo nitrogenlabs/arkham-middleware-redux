@@ -7,7 +7,7 @@
 var lib = require('./lib');
 
 // Redux adapter
-exports.createArkhamJSStore = lib.createArkhamJSStore;
+exports.createArkhamStore = lib.createArkhamStore;
 
 // ArkhamJS middleware
 exports.ReduxMiddleware = lib.ReduxMiddleware;
