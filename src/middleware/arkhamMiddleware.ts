@@ -2,10 +2,7 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {Flux} from 'arkhamjs';
-import {Middleware} from 'redux';
-
-export const arkhamMiddleware = (statePath: string): Middleware => (store) => (next) => (action: any) => {
+export const arkhamMiddleware = (statePath: string, Flux) => (store) => (next) => (action) => {
   const {__ARKHAMJS_DISPATCH: isArkhamJS} = action;
   delete action.__ARKHAMJS_DISPATCH;
 

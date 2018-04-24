@@ -85,6 +85,7 @@
     "member-ordering": false,
     "new-parens": true,
     "no-arg": true,
+    "no-angle-bracket-type-assertion": true,
     "no-any": false,
     "no-bitwise": true,
     "no-conditional-assignment": true,
@@ -128,6 +129,7 @@
     "no-unused-variable": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
+    "no-var-requires": false,
     "object-curly-spacing": [
       true,
       "never"

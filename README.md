@@ -16,19 +16,36 @@ Create a Redux store that creates a two-way binding with ArkhamJS.
 
 ```javascript
 // Create Redux store
-const store = createArkhamStore(rootReducer, statePath, reduxMiddleware, arkhamOptions);
+const store = createArkhamStore({
+  arkhamMiddleware,
+  devTools,
+  flux,
+  reducers,
+  reduxMiddleware,
+  statePath
+});
+```
 
-// Example ----------
+A quick example on usage.
+
+```javascript
 import {createArkhamStore} from '@nlabs/arkhamjs-middleware-redux';
-import React from 'react';
+import {Flux} from 'arkhamjs';
+import * as React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import App from './components/App';
-import {rootReducers} from './reducers';
+import {App} from './components/App';
+import {reducers} from './reducers';
+
+// Initialize ArkhamJS
+Flux.init({name: 'reduxTodos'});
 
 // Create Redux store
-const store = createArkhamStore(rootReducer, 'todos' null, {name: 'reduxTodos'});
+const store = createArkhamStore({
+  flux: Flux,
+  reducers,
+  statePath: 'todos'
+});
 
 // Render root component with store
 render(
@@ -39,10 +56,14 @@ render(
 );
 ```
 
-- **rootReducer** - *(Reducer)* Redux root reducer. The reducer created by `combineReducers()`.
+#### Options
+
+- **flux** - *(Flux)* The Flux object you initialized in your app.
+- **reducers** - *(Reducer)* Redux root reducer. The reducer created by `combineReducers()`.
 - **statePath** - *(string[] | string)* State tree path where to set this branch of the store's state tree.
+- **arkhamMiddleware** - *(any[])* (optional) ArkhamJS options. Use only if intending to initialize a new instance.
+- **devTools** - *(boolean)* (optional) Enable/disable Redux dev tools. Default: false.
 - **reduxMiddleware** - *(Middleware[])* (optional) Redux middleware. Any additional Redux middleware used in the app.
-- **arkhamOptions** - *(FluxOptions)* (optional) ArkhamJS options. Use only if intending to initialize a new instance.
 
 ### `ReduxMiddleware`
 
@@ -50,21 +71,24 @@ ArkhamJS middleware to relay dispatched actions to Redux.
 
 ```javascript
 // Create ArkhamJS middleware
-const reduxMiddleware = new ReduxMiddleware(statePath, store);
+const reduxMiddleware = new ReduxMiddleware(store, name);
+```
 
-// Example ----------
+A simple usage example:
+
+```javascript
 import {ReduxMiddleware} from '@nlabs/arkhamjs-middleware-redux';
 import {createStore} from 'redux';
-import {rootReducers} from './reducers';
+import {reducers} from './reducers';
 
-const store = createStore(rootReducers);
-const middleware = [new ReduxMiddleware('myApp', store)];
+const store = createStore(reducers);
+const middleware = [new ReduxMiddleware(store, 'myApp')];
 
 Flux.init({middleware});
 ```
 
-- **statePath** - *(string[] | string)* State tree path where to set this branch of the store's state tree.
 - **store** - *(Store)* Redux root store. The store created by `createStore()`.
+- **name** - *(string)* (optional) Middleware name. Should be unique if integrating with multiple Redux stores.
 
 ### `arkhamMiddleware`
 
@@ -73,12 +97,16 @@ Redux middleware to relay Redux action dispatches to ArkhamJS.
 ```javascript
 // Create Redux middleware
 const middleware = arkhamMiddleware(statePath);
+```
 
-// Example ----------
+A simple usage example:
+
+```javascript
 import {arkhamMiddleware} from '@nlabs/arkhamjs-middleware-redux';
 import {applyMiddleware, createStore} from 'redux';
+import {reducers} from './reducers';
 
-const store = createStore(rootReducer, applyMiddleware(arkhamMiddleware('myApp')));
+const store = createStore(reducers, applyMiddleware(arkhamMiddleware('myApp')));
 ```
 
 - **statePath** - *(string[] | string)* State tree path where to set this branch of the store's state tree.
@@ -87,20 +115,16 @@ const store = createStore(rootReducer, applyMiddleware(arkhamMiddleware('myApp')
 
 Additional details may be found in the [ArkhamJS Documentation](https://docs.arkhamjs.io).
 
-## Examples
+## Redux Todo example
 
-The following are examples using the [Todo example](https://github.com/reactjs/redux/tree/master/examples/todos) within the Redux repository.
-
-### Example 1: Integrate with existing ArkhamJS app.
-
-Full example. This scenario is recommended if migrating from Redux to ArkhamJS. This will call `Flux.init()` manually. The middleware will be added using the `Flux.addMiddleware()` automatically via the `createArkhamStore()` function.
+The following is a full example using the [Todo example](https://github.com/reactjs/redux/tree/master/examples/todos) within the Redux repository. The middleware will be added using the `Flux.addMiddleware()` automatically via the `createArkhamStore()` function.
 
 ```javascript
 import {Logger, LoggerDebugLevel} from '@nlabs/arkhamjs-middleware-logger';
 import {createArkhamStore} from '@nlabs/arkhamjs-middleware-redux';
 import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {Flux} from 'arkhamjs';
-import React from 'react';
+import * as React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import App from './components/App';
@@ -119,71 +143,11 @@ const Flux.init({
 });
 
 // Create an ArkhamJS store for Redux
-const store = createArkhamStore(rootReducer, 'demo');
-
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-);
-```
-
-
-### Example 2: Add as a new integrated app
-
-Simplified root level app setup. This method will call `Flux.init()` with the configuration options provided. The middleware will be appended to the list of middleware added in the options via the `createArkhamStore()` function.
-
-```javascript
-import {Logger, LoggerDebugLevel} from '@nlabs/arkhamjs-middleware-logger';
-import {createArkhamStore} from '@nlabs/arkhamjs-middleware-redux';
-import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
-import {Flux} from 'arkhamjs';
-import React from 'react';
-import {render} from 'react-dom';
-import {Provider} from 'react-redux';
-import App from './components/App';
-import rootReducer from './reducers';
-
-// Add a console logger for Arkham (optional).
-const logger = new Logger({
-  debugLevel: LoggerDebugLevel.DISPATCH
+const store = createArkhamStore({
+  flux: Flux,
+  reducers: rootReducer,
+  statePath: 'demo'
 });
-
-// ArkhamJS options. If options are set, will call Flux.init(), 
-// otherwise will call Flux.addMiddleware().
-const arkhamOptions = {
-  name: 'reduxDemo', // Optional name of application, defaults to 'arkhamjs'
-  storage: new BrowserStorage(), // Optional persistent storage cache
-  middleware: [logger] // Optional console logger
-};
-
-// Create an ArkhamJS store for Redux
-const store = createArkhamStore(rootReducer, 'demo', null, arkhamOptions);
-
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-);
-```
-
-
-### Example 3: Add as a child app
-
-Nested child app example. In this scenario, Flux.init() is already called in the root.
-
-```javascript
-import {createArkhamStore} from '@nlabs/arkhamjs-middleware-redux';
-import React from 'react';
-import {render} from 'react-dom';
-import {Provider} from 'react-redux';
-import App from './components/App';
-import rootReducer from './reducers';
-
-// Create an ArkhamJS store for Redux
-const store = createArkhamStore(rootReducer, 'app.demo');
 
 render(
   <Provider store={store}>

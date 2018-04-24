@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
     "allowJs": false,
+    "allowSyntheticDefaultImports": false,
     "declaration": true,
+    "esModuleInterop": true,
     "jsx": "react",
     "lib": [
       "es6",
-      "dom",
-      "es2015.promise"
+      "dom"
     ],
     "module": "commonjs",
-    "moduleResolution": "node",
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -33,20 +33,5 @@
   ],
   "include": [
     "./src/**/*"
-  ],
-  "types": [
-    "./src/lib/types",
-    "react",
-    "jest"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "declaration": true,
-    "lib": [
-      "es2015",
-      "dom"
-    ],
-    "module": "commonjs",
-    "sourceMap": true,
-    "target": "es5"
-  }
+  ]
 }
