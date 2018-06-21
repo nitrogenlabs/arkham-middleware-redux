@@ -4,10 +4,4 @@
  */
 'use strict';
 
-var lib = require('./lib');
-
-// Redux adapter
-exports.createArkhamStore = lib.createArkhamStore;
-
-// ArkhamJS middleware
-exports.ReduxMiddleware = lib.ReduxMiddleware;
+module.exports = require('./lib');

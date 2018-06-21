@@ -11,3 +11,6 @@ export {createArkhamStore} from './createArkhamStore';
 
 // Middleware for ArkhamJS
 export {ReduxMiddleware} from './middleware/ReduxMiddleware';
+
+// Types
+export {ArkhamReduxStoreType} from './types/main';

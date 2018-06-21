@@ -5,18 +5,11 @@
 import {Flux} from 'arkhamjs';
 import isPlainObject from 'lodash/isPlainObject';
 import merge from 'lodash/merge';
-import {AnyAction, applyMiddleware, createStore, Dispatch, Middleware, Store} from 'redux';
+import {applyMiddleware, createStore, Store} from 'redux';
+
 import {arkhamMiddleware} from './middleware/arkhamMiddleware';
 import {ReduxMiddleware} from './middleware/ReduxMiddleware';
-
-export interface ArkhamReduxStoreType {
-  arkhamMiddleware: any[];
-  devTools: any;
-  flux: any;
-  reducers: Dispatch<AnyAction>;
-  reduxMiddleware: Middleware[];
-  statePath: string;
-}
+import {ArkhamReduxStoreType} from './types/main';
 
 export const createArkhamStore = (configuration: ArkhamReduxStoreType): Store<any> => {
   const {
@@ -60,6 +53,16 @@ export const createArkhamStore = (configuration: ArkhamReduxStoreType): Store<an
 
     Flux.setState(statePath, store.getState());
   }
+
+  // If saga is being added, run.
+  reduxMiddleware.every((item: any) => {
+    if(item && item.run && item.setContext) {
+      item.run();
+      return false;
+    }
+
+    return true;
+  });
 
   // Add redux middleware to Arkham to relay dispatches to Redux
   middleware.push(new ReduxMiddleware(store, statePath));

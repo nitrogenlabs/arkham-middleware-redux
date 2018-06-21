@@ -1,3 +1,4 @@
+.eslintrc
 .idea
 .travis.yml
 .vscode
@@ -7,5 +8,6 @@
 docs
 node_modules
 package-lock.json
-tslint.json
+src
+tsconfig.json
 yarn.lock
