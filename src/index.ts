@@ -5,6 +5,6 @@
 import {createArkhamStore} from './createArkhamStore';
 import {arkhamMiddleware} from './middleware/arkhamMiddleware';
 import {ReduxMiddleware} from './middleware/ReduxMiddleware';
-import {ArkhamReduxStoreType} from './types/main';
 
-export {arkhamMiddleware, ArkhamReduxStoreType, createArkhamStore, ReduxMiddleware};
+export * from './types/main';
+export {arkhamMiddleware, createArkhamStore, ReduxMiddleware};
